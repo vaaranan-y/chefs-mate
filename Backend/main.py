@@ -6,10 +6,7 @@ from pydantic import BaseModel
 import cohere
 import config
 
-
 co = cohere.Client(config.COHERE_API_KEY)
-
-
 
 class UserChoice(BaseModel):
     userName: str
