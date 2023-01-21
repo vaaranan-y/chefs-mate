@@ -36,7 +36,6 @@ async def root():
 
 @app.post("/testCohere/")
 async def testCohere(choice: UserChoice):
-async def testCohere(choice: UserChoice):
 
     response = co.generate(
         model="command-xlarge-nightly",
@@ -114,9 +113,6 @@ async def testCohere(choice: UserChoice):
         p=0.75,
         frequency_penalty=0,
         presence_penalty=0,
-        stop_sequences=["--"],
-        return_likelihoods="NONE",
-    )
         stop_sequences=["--"],
         return_likelihoods="NONE",
     )
