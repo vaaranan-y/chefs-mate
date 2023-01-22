@@ -167,6 +167,6 @@ async def getRelevantRestaurants(userTakeOut: UserTakeOut):
     return finalResponse
 
 
-@app.get("/recipe/")
+@app.post("/recipe/")
 async def getRecipe(recipes: Recipes):
     return recipe_api.getRecipe(recipes.choice)
