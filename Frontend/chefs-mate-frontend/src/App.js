@@ -1,10 +1,21 @@
 import logo from "./logo.svg";
 import "./App.css";
+<<<<<<< HEAD
 import "./index.css";
+=======
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Homepage from "./homepage.js";
+import Loginpage from "./login";
+import Mainpage from "./main"
+import Menupage from "./menu";
+import Cookpage from "./cook";
+import Deliverpage from "./deliver";
+>>>>>>> 34dbf0c (updated UI)
 
 function App() {
   let userName = "Vaaranan"; // Hardcoded
   return (
+<<<<<<< HEAD
     <div
       className="App"
       style={{
@@ -85,6 +96,19 @@ function App() {
         </div>
       </div>
     </div>
+=======
+    <BrowserRouter>
+    <Routes>
+       <Route exact path="/" element={<Homepage />}></Route>
+        <Route path="/login.js" element={<Loginpage/>}></Route>
+        <Route path="/main.js" element={<Mainpage/>}></Route>  
+        <Route path="/menu.js" element={<Menupage/>}></Route>  
+        <Route path="/cook.js" element={<Cookpage/>}></Route>  
+        <Route path="/deliver.js" element={<Deliverpage/>}></Route>  
+        
+    </Routes>
+  </BrowserRouter>
+>>>>>>> 34dbf0c (updated UI)
   );
 }
 
