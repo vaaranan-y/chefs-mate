@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import cohere
 import config
 import requests
+import recipe_api
 
 co = cohere.Client(config.COHERE_API_KEY)
 
@@ -14,12 +15,16 @@ class UserChoice(BaseModel):
     userName: str
     choice: str
     restrictions: str
-    restrictions: str
 
 
 class Alternatives(BaseModel):
     userName: str
     alts: Optional[str] = None
+
+
+class Recipes(BaseModel):
+    userName: str
+    choice: str
 
 
 app = FastAPI()
@@ -30,8 +35,8 @@ async def root():
     return {"message": "Chef's Mate Test"}
 
 
-@app.post("/testCohere/")
-async def testCohere(choice: UserChoice):
+@app.post("/cohere/generate")
+async def generate_alternative(choice: UserChoice):
 
     response = co.generate(
         model="command-xlarge-nightly",
@@ -107,3 +112,8 @@ async def testCohere(choice: UserChoice):
     response = requests.get(api_url, headers=headers)
     print(response.text)
     return "response"
+
+
+@app.get("/recipe/")
+async def getRecipe(recipes: Recipes):
+    return recipe_api.getRecipe(recipes.choice)
