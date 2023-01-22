@@ -92,10 +92,12 @@ function MainPage(userName) {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    navigate("../menu.js", {
-                      useName: userName,
-                      choice: suggestion,
-                    });
+                    navigate('../menu.js', {
+											state: {
+												useName: userName,
+												choice: suggestion,
+											},
+										});
                   }}
                 >
                   {suggestion}
