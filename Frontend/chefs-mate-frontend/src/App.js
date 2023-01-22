@@ -3,7 +3,7 @@ import "./App.css";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./homepage.js";
-import Loginpage from "./login";
+import LoginPage from "./login";
 import Menupage from "./menu";
 import Cookpage from "./cook";
 import Deliverpage from "./deliver";
@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Homepage />}></Route>
-        <Route path="/login.js" element={<Loginpage />}></Route>
+        <Route path="/login.js" element={<LoginPage />}></Route>
         <Route path="/main.js" element={<MainPage />}></Route>
         <Route path="/menu.js" element={<Menupage />}></Route>
         <Route path="/cook.js" element={<Cookpage />}></Route>
