@@ -1,6 +1,6 @@
 # main.py
 from typing import Optional
-
+import json
 from fastapi import FastAPI
 from pydantic import BaseModel
 import cohere
@@ -14,7 +14,15 @@ class UserChoice(BaseModel):
     userName: str
     choice: str
     restrictions: str
+
+
+class UserTakeOut(BaseModel):
+    userName: str
+    rawChoice: str
     restrictions: str
+    location: str
+    radius: str
+    openNow: str
 
 
 class Alternatives(BaseModel):
@@ -25,7 +33,7 @@ class Alternatives(BaseModel):
 app = FastAPI()
 
 
-@app.get("/test/{}")
+@app.get("/test/")
 async def root():
     return {"message": "Chef's Mate Test"}
 
@@ -69,8 +77,8 @@ async def testCohere(choice: UserChoice):
         Input: {choice.choice}\n
         Output:""",
         max_tokens=100,
-        temperature=0.9,
-        k=0,
+        temperature=0,
+        k=0.9,
         p=0.75,
         frequency_penalty=0,
         presence_penalty=0,
@@ -92,18 +100,46 @@ async def testCohere(choice: UserChoice):
 
 
 @app.get("/testYelp/")
-async def testCohere(choice: UserChoice):
-    location = "Toronto"
-    rawChoice = "Turkey Burger"
-    choice = rawChoice.replace(" ", "%20")
-    radius = "1500"
-    openNow = "false"
+async def testYelp(userTakeOut: UserTakeOut):
     api_url = "https://api.yelp.com/v3/businesses/search?location=Toronto&term=Turkey%20Burger&radius=1500&categories=&price=1&open_now=false&sort_by=rating&limit=20"
-    # api_url = "https://api.yelp.com/v3/businesses/search?location=" + location + "&term=" + choice + "&radius=" + radius + "&categories=&price=1&open_now=false&sort_by=rating&limit=20"
     headers = {
         "accept": "application/json",
         "Authorization": "Bearer " + config.YELP_API_KEY,
     }
     response = requests.get(api_url, headers=headers)
-    print(response.text)
-    return "response"
+    return json.loads(response.text)
+
+
+@app.get("/getRelevantRestaurants/")
+async def getRelevantRestaurants(userTakeOut: UserTakeOut):
+    api_url = (
+        "https://api.yelp.com/v3/businesses/search?location="
+        + userTakeOut.location
+        + "&term="
+        + userTakeOut.rawChoice.replace(" ", "%20")
+        + "&radius="
+        + userTakeOut.radius
+        + "&categories=&price=1&open_now=false&sort_by=rating&limit=20"
+    )
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + config.YELP_API_KEY,
+    }
+
+    rawResponse1 = requests.get(api_url, headers=headers)
+    rawResponse2 = json.loads(rawResponse1.text)
+    finalResponse = {"restaurants": []}
+
+    for restaurant in rawResponse2["businesses"]:
+        print(restaurant)
+        finalResponse["restaurants"].append(
+            {
+                "name": restaurant["name"],
+                "image": restaurant["image_url"],
+                "rating": restaurant["rating"],
+                "location": restaurant["location"]["display_address"][0],
+                "phoneNumber": restaurant["display_phone"],
+            }
+        )
+
+    return finalResponse
