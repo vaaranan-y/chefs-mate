@@ -83,9 +83,9 @@ async def generate_alternative(choice: UserChoice):
         --\n
         Input: {choice.choice}\n
         Output:""",
-        max_tokens=100,
+        max_tokens=120,
         temperature=0,
-        k=0.9,
+        k=0,
         p=0.75,
         frequency_penalty=0,
         presence_penalty=0,
@@ -94,7 +94,10 @@ async def generate_alternative(choice: UserChoice):
     )
 
     output = response.generations[0].text
-    output = output[:-2].split(",")
+    if output[-2:] == "--":
+        output = output[:-2]
+    output = output.split(",")
+
     for i in range(len(output)):
         output[i] = output[i].strip()
 
