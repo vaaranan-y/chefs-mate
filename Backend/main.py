@@ -23,6 +23,7 @@ class UserTakeOut(BaseModel):
     location: str
     radius: str
     openNow: str
+    budget: int
 
 
 class Alternatives(BaseModel):
@@ -112,6 +113,13 @@ async def testYelp(userTakeOut: UserTakeOut):
 
 @app.get("/getRelevantRestaurants/")
 async def getRelevantRestaurants(userTakeOut: UserTakeOut):
+    budgetLevel = "1"
+    if userTakeOut.budget < 10:
+        budgetLevel = "1"
+    elif userTakeOut.budget >= 10 and userTakeOut.budget < 25:
+        budgetLevel = "2"
+    else:
+        budgetLevel = "3"
     api_url = (
         "https://api.yelp.com/v3/businesses/search?location="
         + userTakeOut.location
@@ -119,7 +127,9 @@ async def getRelevantRestaurants(userTakeOut: UserTakeOut):
         + userTakeOut.rawChoice.replace(" ", "%20")
         + "&radius="
         + userTakeOut.radius
-        + "&categories=&price=1&open_now=false&sort_by=rating&limit=20"
+        + "&categories=&price="
+        + budgetLevel
+        + "&open_now=false&sort_by=rating&limit=20"
     )
     headers = {
         "accept": "application/json",
