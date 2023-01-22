@@ -67,39 +67,30 @@ async def generate_alternative(choice: UserChoice):
         This program will generate 5 different options that are not exactly the same as the input food.\n
         Each of these options should be a healthier alternative to the input food.\n
         Healthier alternatives include foods with less processed sugars, less cholesterol, less trans fats, more nutrients, and more fruits and vegetables.\n
-        Generate 5 different alternative healthier food options for the input in list format separated by a comma.\n
+        Generate 5 different alternative healthier food options for the input in list format separated by semicolons.\n
         Don't output the same option twice. Don't output the ingredient as an option. Don't include \"-\" in the output \n
         Don't include the description of the food in the output.
-        Healthier food options must satisfy the following restrictions: {choice.restrictions}.\n
+        alternative food options in the output must be {choice.restrictions}.\n
         --\n
         Input: Pizza\n
-        Output: Bagel with Tomatoes, Portobello Caps and Hummus, Meatballs on Tortillas, Kale Chips and White Sauce, Whole Wheat Pita Bread Pizza\n
+        Output: Bagel with Tomatoes;Portobello Caps and Hummus;Meatballs on Tortillas;Kale Chips and White Sauce;Whole Wheat Pita Bread Pizza\n
         --\n
         Input: Soda\n
-        Output: water, milk, juice, tea, coffee\n
+        Output: water;milk;juice;tea;coffee\n
         --\n
         Input: hamburger\n
-        Output: Grilled Portobello Mushroom Burger, Sweet Potato–Veggie Burgers with Avocado, Big Veg Quinoa Burger, Sweet and Smoky Beet Burgers, Black Bean Burgers\n
-        --\n
-        Input: chips\n
-        Output: Baked Potato Chips, Carrot Chips, Kale Chips, Sweet Potato Chips, Zucchini Chips\n
-        --\n
-        Input: sandwich\n
-        Output: Cucumber and avocado sandwich, grilled chicken and tomato sandwich, tuna and cucumber sandwich, turkey and avocado sandwich, vegetarian hummus and tomato sandwich\n
-        --\n
-        Input: Hot dogs\n
-        Output: Bun-less chili dog, healthy dogs with avocado, carrot, and celery sticks, chili and cheese dog, coleslaw and chili dog, Dietitian-approved grilled chicken dog\n
+        Output: Grilled Portobello Mushroom Burger;Sweet Potato–Veggie Burgers with Avocado;Big Veg Quinoa Burger;Sweet and Smoky Beet Burgers;Black Bean Burgers\n
         --\n
         Input: donuts\n
-        Output: Apple slices with cinnamon and honey, Greek yogurt with berries and honey, mixed berry smoothie, oatmeal with nuts and honey, quinoa and fruit salad\n
+        Output: Apple slices with cinnamon and honey;Greek yogurt with berries and honey;mixed berry smoothie;oatmeal with nuts and honey;quinoa and fruit salad\n
         --\n
         Input: {choice.choice}\n
         Output:""",
-        max_tokens=120,
+        max_tokens=150,
         temperature=0,
         k=0,
         p=0.75,
-        frequency_penalty=0,
+        frequency_penalty=0.4,
         presence_penalty=0,
         stop_sequences=["--"],
         return_likelihoods="NONE",
@@ -108,7 +99,7 @@ async def generate_alternative(choice: UserChoice):
     output = response.generations[0].text
     if output[-2:] == "--":
         output = output[:-2]
-    output = output.split(",")
+    output = output.split(";")
 
     for i in range(len(output)):
         output[i] = output[i].strip()
