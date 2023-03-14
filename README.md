@@ -1,3 +1,5 @@
 # chefs-mate
 Every college student has at least once struggled with the balancing act of budgeting their work, their health, and their expenses 😮‍💨. It often goes overlooked as a prevalent cause of mental health deterioration. That is why our app is the perfect solution for university students who want to save money and eat healthier. Chef’s Mate 👨‍🍳 is an AI-powered meal planning and budgeting tool that makes it easy to plan and budget for meals, with a focus on reducing the amount spent on eating out, while encouraging students to make healthier meal decisions 🍎.  As soon as a student feels an unhealthy craving setting in 😈, our app will find a healthy replacement, better for their health, while also keeping them satisfied. Our app even takes the leap to mitigate costs by incorporating the user’s budget into its recommendations 💰. Chef’s mate is now serving healthy eating habits with a side of financial freedom and happiness!
 
+Submission for UofTHacks '23
+Built using cohere.ai NLP Toolkit
